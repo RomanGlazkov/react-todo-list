@@ -1,43 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class Form extends React.Component {
-	initialState = {
-		text: '',
-	};
+function Form(props) {
+	const initialState = '';
+	const [text, setText] = useState(initialState);
 
-	state = this.initialState;
+	function submitForm(event) {
+		event.preventDefault();
+		if (text !== '') {
+			props.addTodo(text);
+			setText(initialState);
+		}
+	}
 
-	handleChange = (event) => {
+	function handleChange(event) {
 		const { value } = event.target;
 
-		this.setState({
-			text: value,
-		});
-	};
-
-	submitForm = (event) => {
-		event.preventDefault();
-		if (this.state.text !== '') {
-			this.props.addTodo(this.state.text);
-			this.setState(this.initialState);
-		}
-	};
-
-	render() {
-		const { text } = this.state;
-
-		return (
-			<form onSubmit={this.submitForm}>
-				<input
-					type="text"
-					placeholder="Add todo"
-					name="todo"
-					value={text}
-					onChange={this.handleChange}
-				/>
-			</form>
-		);
+		setText(value);
 	}
+
+	return (
+		<form onSubmit={submitForm}>
+			<input type="text" placeholder="Add todo" name="todo" value={text} onChange={handleChange} />
+		</form>
+	);
 }
 
 export default Form;
