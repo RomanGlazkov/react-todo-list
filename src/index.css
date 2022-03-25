@@ -41,13 +41,19 @@ html {
   width: 250px;
   border-radius: 4px;
   border: 2px solid transparent;
+  user-select: none;
+}
+
+input.editable {
+  color: inherit;
+  font-size: inherit;
 }
 
 .complete {
   text-decoration: line-through;
 }
 
-[type='text'],
+input.add-todo,
 .delete-btn {
   box-sizing: border-box;
   padding: 0.5rem 1rem;

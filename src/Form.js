@@ -20,7 +20,14 @@ function Form(props) {
 
 	return (
 		<form onSubmit={submitForm}>
-			<input type="text" placeholder="Add todo" name="todo" value={text} onChange={handleChange} />
+			<input
+				type="text"
+				className="add-todo"
+				placeholder="Add todo"
+				name="todo"
+				value={text}
+				onChange={handleChange}
+			/>
 		</form>
 	);
 }

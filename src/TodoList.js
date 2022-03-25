@@ -1,9 +1,53 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 function ListItem(props) {
+	const initialState = {
+		todoId: null,
+		taskText: '',
+		isEditing: false,
+	};
+
+	const [state, setState] = useState(initialState);
+	const inputRef = useRef(null);
+
+	useEffect(() => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+		}
+	});
+
+	function handleEdit(id, text) {
+		setState({
+			todoId: id,
+			taskText: text,
+			isEditing: true,
+		});
+	}
+
+	function handleChange(event) {
+		const { value } = event.target;
+
+		setState((prevState) => {
+			return { ...prevState, taskText: value };
+		});
+	}
+
+	function handleBlur(event, id) {
+		props.editTodo(id, event.target.value);
+		setState(initialState);
+	}
+
+	function handleKeyDown(event) {
+		if (event.code === 'Enter') {
+			event.target.blur();
+		}
+	}
+
 	let todos = props.todosData;
 
 	todos = todos.map((todo) => {
+		const isEditing = state.isEditing && state.todoId === todo.id;
+
 		return (
 			<li className="todo-list__item" key={todo.id}>
 				<input
@@ -11,48 +55,30 @@ function ListItem(props) {
 					onChange={() => props.toggleTodo(todo.id)}
 					checked={todo.complete ? true : false}
 				/>
-				<span
-					className={'editable ' + (todo.complete ? 'complete' : '')}
-					onDoubleClick={(event) => handleEdit(todo.id, event)}
-				>
-					{todo.text}
-				</span>
+				{isEditing ? (
+					<input
+						type="text"
+						className="editable"
+						value={state.taskText}
+						ref={inputRef}
+						onBlur={(event) => handleBlur(event, todo.id)}
+						onChange={handleChange}
+						onKeyDown={handleKeyDown}
+					/>
+				) : (
+					<span
+						className={'editable ' + (todo.complete ? 'complete' : '')}
+						onDoubleClick={() => handleEdit(todo.id, todo.text)}
+					>
+						{todo.text}
+					</span>
+				)}
 				<button className="delete-btn" onClick={() => props.deleteTodo(todo.id)}>
 					Delete
 				</button>
 			</li>
 		);
 	});
-
-	function handleEdit(id, event) {
-		const todoSpan = event.target;
-		const todoText = todoSpan.textContent;
-		const form = document.createElement('form');
-		const input = document.createElement('input');
-
-		input.value = todoText;
-
-		form.appendChild(input);
-		todoSpan.innerHTML = '';
-		todoSpan.appendChild(form);
-		input.focus();
-
-		const handleSubmit = () => {
-			if (input.value !== todoText) {
-				props.editTodo(id, input.value);
-			} else {
-				todoSpan.innerHTML = input.value;
-			}
-		};
-
-		form.onsubmit = (event) => {
-			event.preventDefault();
-			input.removeEventListener('blur', handleSubmit);
-			handleSubmit();
-		};
-
-		input.addEventListener('blur', handleSubmit);
-	}
 
 	return todos;
 }
