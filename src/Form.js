@@ -6,7 +6,7 @@ function Form(props) {
 
 	function submitForm(event) {
 		event.preventDefault();
-		if (text !== '') {
+		if (text.trim() !== '') {
 			props.addTodo(text);
 			setText(initialState);
 		}
