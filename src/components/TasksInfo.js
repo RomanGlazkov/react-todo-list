@@ -14,10 +14,11 @@ function TasksInfo({ filter, selectAll, setFilter, activeTodoCount }) {
           id="select-all"
           onChange={(event) => selectAll(event)}
           checked={activeTodoCount === 0}
+          data-testid="selectAll"
         />
         <label htmlFor="select-all">Select All</label>
       </div>
-      <div>
+      <div data-testid="todoCount">
         <b>{activeTodoCount}</b> tasks left
       </div>
       <ul className="filters">

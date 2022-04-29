@@ -52,8 +52,13 @@ function TodoItem(props) {
   const isEditing = todoState.isEditing && todoState.id === id;
 
   return (
-    <li className="todo-list__item">
-      <input type="checkbox" onChange={() => toggleTodo(id)} checked={complete ? true : false} />
+    <li className="todo-list__item" data-testid="todo">
+      <input
+        type="checkbox"
+        onChange={() => toggleTodo(id)}
+        checked={complete ? true : false}
+        data-testid="todoCheckbox"
+      />
       {isEditing ? (
         <input
           type="text"
@@ -63,11 +68,13 @@ function TodoItem(props) {
           onBlur={(event) => handleBlur(event, id)}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
+          data-testid="todoInput"
         />
       ) : (
         <span
           className={'editable' + (complete ? ' complete' : '')}
           onDoubleClick={() => handleEdit(id, text)}
+          data-testid="todoText"
         >
           {text}
         </span>

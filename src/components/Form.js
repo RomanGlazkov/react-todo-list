@@ -5,7 +5,7 @@ import { setText } from '../actions/formActions';
 
 const mapStateToProps = (state) => ({ formText: state.formText });
 
-function Form({ formText, addTodo, setText }) {
+export function Form({ formText, addTodo, setText }) {
   function submitForm(event) {
     event.preventDefault();
     if (formText.trim() !== '') {

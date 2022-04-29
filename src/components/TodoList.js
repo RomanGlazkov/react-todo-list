@@ -36,14 +36,18 @@ function TodoList({ todos, filter, clearCompletedTodos }) {
   return (
     <div>
       <TasksInfo activeTodoCount={activeTodoCount} />
-      <ul className="todo-list">
+      <ul className="todo-list" data-testid="todoList">
         {todos.map((todo) => (
           <TodoItem key={todo.id} {...todo} />
         ))}
       </ul>
       {completedTodoCount > 0 && (
         <div className="clear-completed">
-          <button className="clear-completed__btn" onClick={() => clearCompletedTodos()}>
+          <button
+            className="clear-completed__btn"
+            onClick={() => clearCompletedTodos()}
+            data-testid="clearButton"
+          >
             Clear completed tasks
           </button>
         </div>
